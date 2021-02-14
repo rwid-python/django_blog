@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<body>
+
+
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <!-- Blog Entries Column -->
+      <div class="col-md-8">
+
+        <h1 class="my-4">{{cats}} Category
+        </h1>
+        <small>Contain Post per Category :</small>
+        <hr>
+      {% if category_post %}
+        {% for obj in category_post %}
+        <!-- Blog Post -->
+        <div class="card mb-4">
+          <img class="card-img-top" src="{{obj.thumbnail.url}}" alt="Card image cap">
+          <div class="card-body">
+            <h2 class="card-title">{{obj.title}}</h2>
+            <p class="card-text">{{obj.description}}</p>
+            <a href="{{obj.get_absolute_url}}" class="btn btn-primary">Read More &rarr;</a>
+          </div>
+          <div class="card-footer text-muted">
+            Posted on {{obj.date|timesince}} ago by
+            <a href="#"> {{obj.author}}</a>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+          <h2>Nothing Post</h2>
+      {% endif %}
+        <!-- Pagination -->
+        <ul class="pagination justify-content-center mb-4">
+          {% if queryset.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?{{page_request_var}}={{queryset.previous_page_number}}">&larr; Older</a>
+          </li>
+          {% endif %}
+          <li class="page-item">
+          {% if queryset.has_next %}
+            <a class="page-link" href="?{{page_request_var}}={{queryset.next_page_number}}">Newer &rarr;</a>
+          </li>
+          {% endif %}
+        </ul>
+
+      </div>
+
+      <!-- Sidebar Widgets Column -->
+      {% include 'widget.html' %}
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+
+
+
+</body>
+
+{% endblock content %}
